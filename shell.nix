@@ -13,6 +13,7 @@ pkgs.mkShell {
       exclude = "dist-newstyle";
       command = "cabal new-build all";
     })
+    (pkgs.writeScriptBin "release" "nix-build | cachix push derekmaffett")
   ];
 }
 

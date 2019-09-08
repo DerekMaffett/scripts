@@ -1,0 +1,19 @@
+language: nix
+os:
+    - osx
+    - linux
+install:
+    - nix-env -iA cachix -f https://cachix.org/api/v1/install
+    - cachix authtoken $CACHIX_AUTH_TOKEN
+    - cachix generate-keypair derekmaffett
+script:
+    - nix-build
+deploy:
+    - provider: script
+      script: nix-build | cachix push derekmaffett
+      on:
+          tags: true
+          repo: DerekMaffett/scripts
+env:
+    global:
+        - secure: g0MbRKLgJtQD0QZGfl5Jce1hNl4x/+HuWDhExq0Tx57b0VdFoteuxeMO5mjqUy0tHqmj8S1TIyuvnMI3yQzGc7u05MGDd9t+esXCkhRlKEqotXo6/ouM5cjgwOCnp51iuSn7QjX2cheVUSrPLIPszERgQBbhebpazOJv/0Ex/5v5yXygD/BLDQ7g25I66ta08bmeoES38xyZM6bGJq3UO50katlzzfbr01/+zlq2zFSyQXf/qnKKm+cLVXsgFqGwRi256JcarMroFfXYiEcSFtCZZYiuS4rZcqI6ptLivzu5RBKbAaer7MOSYeVBYEC+KtV2xMVnsP+i3756AjykDki6UcW5Q5xB6Zdvs17EjKlU8Jc1eQZHSXyinmv+IDYfafxCQa18PyKHCQEscpxPpWXwo2sGCHHXvfx9PgoreZ5iLLLswu6GCL29+YdE/XLMdX6j/r7RhzhhVKV+s8bbLYa8NbHLvYeQ3VdtqiUeRsfR/BDV6WEf7pqijlj1GMMkxw6VagPfd2ezae7RYDYJE6Mkd4YFmkpgw0FeZbWpe58SEIilkUbYAQ2jEjoW1NUOf8yrvJUYLc4U1pdL5BbjtrUt5UMDcwjMe0/60NvWX0OYQ5V96WkT7ua9brYXmpZcpObZo7Gm/hyYoqOn/CCJ+qehroXw9OC03Y3+VogGgnM=
