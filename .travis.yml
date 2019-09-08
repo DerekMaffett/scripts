@@ -5,7 +5,7 @@ os:
 install:
     - nix-env -iA cachix -f https://cachix.org/api/v1/install
     - cachix authtoken $CACHIX_AUTH_TOKEN
-    - cachix generate-keypair derekmaffett
+    - cachix use derekmaffett
 script:
     - nix-build
 deploy:
@@ -17,3 +17,4 @@ deploy:
 env:
     global:
         - secure: g0MbRKLgJtQD0QZGfl5Jce1hNl4x/+HuWDhExq0Tx57b0VdFoteuxeMO5mjqUy0tHqmj8S1TIyuvnMI3yQzGc7u05MGDd9t+esXCkhRlKEqotXo6/ouM5cjgwOCnp51iuSn7QjX2cheVUSrPLIPszERgQBbhebpazOJv/0Ex/5v5yXygD/BLDQ7g25I66ta08bmeoES38xyZM6bGJq3UO50katlzzfbr01/+zlq2zFSyQXf/qnKKm+cLVXsgFqGwRi256JcarMroFfXYiEcSFtCZZYiuS4rZcqI6ptLivzu5RBKbAaer7MOSYeVBYEC+KtV2xMVnsP+i3756AjykDki6UcW5Q5xB6Zdvs17EjKlU8Jc1eQZHSXyinmv+IDYfafxCQa18PyKHCQEscpxPpWXwo2sGCHHXvfx9PgoreZ5iLLLswu6GCL29+YdE/XLMdX6j/r7RhzhhVKV+s8bbLYa8NbHLvYeQ3VdtqiUeRsfR/BDV6WEf7pqijlj1GMMkxw6VagPfd2ezae7RYDYJE6Mkd4YFmkpgw0FeZbWpe58SEIilkUbYAQ2jEjoW1NUOf8yrvJUYLc4U1pdL5BbjtrUt5UMDcwjMe0/60NvWX0OYQ5V96WkT7ua9brYXmpZcpObZo7Gm/hyYoqOn/CCJ+qehroXw9OC03Y3+VogGgnM=
+        - secure: aCAjshA7ewFE7fel6DTkkMD3sj5KtY/B94rb7x9Fz4PFm5AouchFCsNKSoVKgoGnQHt97Hn04gedXyEdGfeYvu9DjJfMw//Y80ypRugc7OdNPnBKfJuMOZB4s5+5JpHEqT3CS9kybgAq9E9+mE569ZBGlv4A1hlikYJ8jD5JZPmfmEbuNU84iZwlSpBCLBVkhaGFME2LD4l30n5nHqjotQwx7UraG3APjsDim2PEA+9efPX9r/J9ZqbZ1ROP/YxCeRfUgKzF4rJmY0p6Qg1jtvdmxSOfwQxsiLp8DdV1VCjxHcWOIR6zJZWB9kGZaPYbN+xqb97UG8XgjjbeTOzbHRjHu6xLRoGhBQbHM8Gq0lNbUQn6JSZGTmM5Reol5xp2AAUcdm8q+B359XX41Au74BzUyqlfZbcy2fih7LvmJO62J0UE06zYfMU4zQHLb/K4l/2n6n53vvy0N294LZ2zDRxeHGo850dOemFp5aYa4vtuCnikJgOh6B1mXOlqCUdJf2wHef3raK+c5bwbySmB8qpB6+tVjqgM9sxxzZ+qw1fltZDTsAXKGeR9hcwHoC+F+lNuB6U3fYZymOuEIw/nvXsoeqd/WLx/zlaqI6EySoMRXvBw56FtHpp/rmmC14iOOLm53GdBgBrctXAQqcpkn5niFtLY1lUCJMp2UIlnVJg=
