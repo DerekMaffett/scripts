@@ -7,14 +7,14 @@ install:
     - cachix authtoken $CACHIX_AUTH_TOKEN
     - cachix use derekmaffett
 script:
-    - nix-build
-deploy:
-    - provider: script
-      script: nix-build | cachix push derekmaffett
-      on:
-          tags: true
-          repo: DerekMaffett/scripts
+    - nix-build | cachix push derekmaffett
+# deploy:
+#     - provider: script
+#       script: nix-build | cachix push derekmaffett
+#       on:
+#           tags: true
+#           repo: DerekMaffett/scripts
 env:
     global:
         - secure: g0MbRKLgJtQD0QZGfl5Jce1hNl4x/+HuWDhExq0Tx57b0VdFoteuxeMO5mjqUy0tHqmj8S1TIyuvnMI3yQzGc7u05MGDd9t+esXCkhRlKEqotXo6/ouM5cjgwOCnp51iuSn7QjX2cheVUSrPLIPszERgQBbhebpazOJv/0Ex/5v5yXygD/BLDQ7g25I66ta08bmeoES38xyZM6bGJq3UO50katlzzfbr01/+zlq2zFSyQXf/qnKKm+cLVXsgFqGwRi256JcarMroFfXYiEcSFtCZZYiuS4rZcqI6ptLivzu5RBKbAaer7MOSYeVBYEC+KtV2xMVnsP+i3756AjykDki6UcW5Q5xB6Zdvs17EjKlU8Jc1eQZHSXyinmv+IDYfafxCQa18PyKHCQEscpxPpWXwo2sGCHHXvfx9PgoreZ5iLLLswu6GCL29+YdE/XLMdX6j/r7RhzhhVKV+s8bbLYa8NbHLvYeQ3VdtqiUeRsfR/BDV6WEf7pqijlj1GMMkxw6VagPfd2ezae7RYDYJE6Mkd4YFmkpgw0FeZbWpe58SEIilkUbYAQ2jEjoW1NUOf8yrvJUYLc4U1pdL5BbjtrUt5UMDcwjMe0/60NvWX0OYQ5V96WkT7ua9brYXmpZcpObZo7Gm/hyYoqOn/CCJ+qehroXw9OC03Y3+VogGgnM=
-        - secure: aCAjshA7ewFE7fel6DTkkMD3sj5KtY/B94rb7x9Fz4PFm5AouchFCsNKSoVKgoGnQHt97Hn04gedXyEdGfeYvu9DjJfMw//Y80ypRugc7OdNPnBKfJuMOZB4s5+5JpHEqT3CS9kybgAq9E9+mE569ZBGlv4A1hlikYJ8jD5JZPmfmEbuNU84iZwlSpBCLBVkhaGFME2LD4l30n5nHqjotQwx7UraG3APjsDim2PEA+9efPX9r/J9ZqbZ1ROP/YxCeRfUgKzF4rJmY0p6Qg1jtvdmxSOfwQxsiLp8DdV1VCjxHcWOIR6zJZWB9kGZaPYbN+xqb97UG8XgjjbeTOzbHRjHu6xLRoGhBQbHM8Gq0lNbUQn6JSZGTmM5Reol5xp2AAUcdm8q+B359XX41Au74BzUyqlfZbcy2fih7LvmJO62J0UE06zYfMU4zQHLb/K4l/2n6n53vvy0N294LZ2zDRxeHGo850dOemFp5aYa4vtuCnikJgOh6B1mXOlqCUdJf2wHef3raK+c5bwbySmB8qpB6+tVjqgM9sxxzZ+qw1fltZDTsAXKGeR9hcwHoC+F+lNuB6U3fYZymOuEIw/nvXsoeqd/WLx/zlaqI6EySoMRXvBw56FtHpp/rmmC14iOOLm53GdBgBrctXAQqcpkn5niFtLY1lUCJMp2UIlnVJg=
+        - secure: oLr1rJIhqqa6YmyZrOqC08FlytBkfVgxjU00ZlIfeI7YAljmsgktUV/QLl+r9Enl4BeYo3e9N1ezie1NZ7onohf68s457OChidq9FYIx6PTljsnF0vmaK2mg35I+NuRxZLsDwCfReUWa/Lb/WslkmcsddRUVeuQ0Cq16o509zUBm4+zfMcD4h0S20EU3rl/lNvp4fM+IvrYYW9PmjA6E5+w4wyarsJIQ9Bl8r6IdI3aDxdk4IMm5pQjsTr4wDbs4NeI12SWNB105bRVD43JsPVE39drABkZ3wHywn/jS7edU/hqRT0fCirbG+f5tSJYEmOwCjQvR5ap8WIv6RGaVqhecp/OBLe/jl3V7NWFpY9qgJnMrcqcEt8sc15HznOgur26+28dbPxdthwpkI2M4/EjiPiG4/sL4vTfQgM+bplhpMHnZGT1ELbA/l7wBa2X/nqKNHtT7yIyuxgZrihTSiBe1+wQBbKQNF3LUquXyefF27c8sWlIYEWc49KTx2TspJdo4jYUSvh4r9t/j1EExeHYDbfVLdHB4vuKMxh5c+myVmInizMEIknj/A4wrfhXKYlexRKCOVpCOt4d69Ez+Ts9PrBf8uZPN11OrkowBenNkVXyF26nlY+RHcEbCU1cxbSOAwtgWtme2S7p4NveLyt1tKHxCeTird6rdkIBD+4s=
