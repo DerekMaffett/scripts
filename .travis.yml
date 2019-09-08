@@ -5,8 +5,7 @@ os:
 install:
     - nix-env -iA cachix -f https://cachix.org/api/v1/install
     - cachix authtoken $CACHIX_AUTH_TOKEN
-    - echo $TRAVIS_OS_NAME
-    - if [ "$TRAVIS_OS_NAME" == "Darwin" ]; then echo \"trusted-users = root $USER\" | sudo tee -a /etc/nix/nix.conf && sudo pkill nix-daemon" fi
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then echo \"trusted-users = root $USER\" | sudo tee -a /etc/nix/nix.conf && sudo pkill nix-daemon fi
     - cachix use derekmaffett
 script:
     - nix-build | cachix push derekmaffett
