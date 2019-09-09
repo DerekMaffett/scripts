@@ -14,6 +14,7 @@ pkgs.mkShell {
       command = "cabal new-build all";
     })
     (pkgs.writeScriptBin "release" "nix-build | cachix push derekmaffett")
+    (pkgs.writeScriptBin "projects" "cabal new-run projects -- $@")
   ];
 }
 

@@ -10,6 +10,7 @@ import           System.Process                 ( callCommand )
 import           Files                          ( alterJsonFile
                                                 , alterYamlFile
                                                 , readJsonFile
+                                                , writeJsonFile
                                                 )
 import           Tmuxinator                     ( addToTmuxinatorWorkspace
                                                 , WindowConfig(..)
@@ -41,7 +42,17 @@ clone forceRemove = do
         $ mapM_ (cloneProject projectsDir) repos
   where
     getRepos = do
-        homeDir                  <- Dir.getHomeDirectory
+        homeDir        <- Dir.getHomeDirectory
+        hasPublicRepos <-
+            Dir.doesPathExist $ homeDir <> "/" <> publicProjectsFilePath
+        hasPrivateRepos <-
+            Dir.doesPathExist $ homeDir <> "/" <> privateProjectsFilePath
+        if not hasPublicRepos
+            then writeJsonFile publicProjectsFilePath ([] :: [String])
+            else return ()
+        if not hasPrivateRepos
+            then writeJsonFile privateProjectsFilePath ([] :: [String])
+            else return ()
         publicRepos :: [String]  <- readJsonFile publicProjectsFilePath
         privateRepos :: [String] <- readJsonFile privateProjectsFilePath
         return $ publicRepos <> privateRepos
