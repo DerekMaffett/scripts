@@ -1,10 +1,11 @@
 let
   pkgs = import <nixpkgs> {};
+  project = (import ./release.nix).project;
 in
 pkgs.mkShell {
   name="scripts";
   inputsFrom=[
-    (import ./release.nix).project.env
+    project.env
   ];
   buildInputs=[
     (pkgs.writeWatchScript {
@@ -13,8 +14,12 @@ pkgs.mkShell {
       exclude = "dist-newstyle";
       command = "cabal new-build all";
     })
-    (pkgs.writeScriptBin "release" "nix-build | cachix push derekmaffett")
-    (pkgs.writeScriptBin "projects" "cabal new-run projects -- $@")
+    (pkgs.localCabalRun "projects")
+    (pkgs.localCabalRun "copy")
+    (pkgs.localCabalRun "create-interactive-slideshow")
+    (pkgs.localCabalRun "nix-github")
+    (pkgs.localCabalRun "nix-npm")
+    (pkgs.localCabalRun "ssh-init")
   ];
 }
 
