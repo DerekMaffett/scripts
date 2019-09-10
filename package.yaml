@@ -25,6 +25,7 @@ dependencies:
     - ilist
     - bytestring
     - monad-parallel
+    - fsnotify
 
 library:
     source-dirs: ./common
@@ -78,6 +79,15 @@ executables:
     create-interactive-slideshow:
         main: Main.hs
         source-dirs: create-interactive-slideshow
+        ghc-options:
+            - -threaded
+            - -rtsopts
+            - -with-rtsopts=-N
+        dependencies:
+            - scripts
+    simple-watch:
+        main: Main.hs
+        source-dirs: simple-watch
         ghc-options:
             - -threaded
             - -rtsopts

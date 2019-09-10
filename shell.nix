@@ -10,10 +10,11 @@ pkgs.mkShell {
   buildInputs=[
     (pkgs.writeWatchScript {
       name = "watch-all";
-      src = "."; 
+      src = "**/*.hs"; 
       exclude = "dist-newstyle";
       command = "cabal new-build all";
     })
+    (pkgs.writeShellScriptBin "update" "hpack && cabal2nix . > project.nix")
     (pkgs.localCabalRun "projects")
     (pkgs.localCabalRun "copy")
     (pkgs.localCabalRun "create-interactive-slideshow")

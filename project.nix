@@ -1,6 +1,6 @@
-{ mkDerivation, aeson, base, bytestring, directory, hpack, ilist
-, monad-parallel, optparse-applicative, process, split, stdenv
-, text, unordered-containers, yaml
+{ mkDerivation, aeson, base, bytestring, directory, fsnotify, hpack
+, ilist, monad-parallel, optparse-applicative, process, split
+, stdenv, text, unordered-containers, yaml
 }:
 mkDerivation {
   pname = "scripts";
@@ -9,12 +9,12 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
-    aeson base bytestring directory ilist monad-parallel
+    aeson base bytestring directory fsnotify ilist monad-parallel
     optparse-applicative process split text unordered-containers yaml
   ];
   libraryToolDepends = [ hpack ];
   executableHaskellDepends = [
-    aeson base bytestring directory ilist monad-parallel
+    aeson base bytestring directory fsnotify ilist monad-parallel
     optparse-applicative process split text unordered-containers yaml
   ];
   prePatch = "hpack";
