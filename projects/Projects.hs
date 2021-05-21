@@ -1,23 +1,22 @@
 module Projects
     ( clone
     , new
-    )
-where
+    ) where
 
-import qualified System.Directory              as Dir
-import           System.Exit
-import           System.Process                 ( callCommand )
+import           Control.Monad
+import           Data.Aeson
+import           Data.HashMap.Strict
 import           Files                          ( alterJsonFile
                                                 , alterYamlFile
                                                 , readJsonFile
                                                 , writeJsonFile
                                                 )
-import           Tmuxinator                     ( addToTmuxinatorWorkspace
-                                                , WindowConfig(..)
+import qualified System.Directory              as Dir
+import           System.Exit
+import           System.Process                 ( callCommand )
+import           Tmuxinator                     ( WindowConfig(..)
+                                                , addToTmuxinatorWorkspace
                                                 )
-import           Control.Monad
-import           Data.Aeson
-import           Data.HashMap.Strict
 
 
 new projectName = do

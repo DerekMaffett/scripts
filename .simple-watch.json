@@ -1,5 +1,0 @@
-{
-    "src": ".",
-    "exclude": ["dist-newstyle"],
-    "command": "cabal new-build all"
-}

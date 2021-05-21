@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.32.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 884418395ffe38f0b483cbe0708af56ddb3a2f982a86cbd1ea5fc9674d628b6b
+-- hash: 923be8dd740cd967bd252a5455b7431147fef3ceeae14c402a92edc063967940
 
 name:           scripts
 version:        0.1.0.0
@@ -32,7 +32,15 @@ library
       Paths_scripts
   hs-source-dirs:
       ./common
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -55,7 +63,15 @@ executable copy
       Paths_scripts
   hs-source-dirs:
       copy
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -80,7 +96,15 @@ executable create-interactive-slideshow
       Paths_scripts
   hs-source-dirs:
       create-interactive-slideshow
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -105,7 +129,15 @@ executable nix-github
       Paths_scripts
   hs-source-dirs:
       nix-github
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -130,7 +162,15 @@ executable nix-npm
       Paths_scripts
   hs-source-dirs:
       nix-npm
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -156,7 +196,49 @@ executable projects
       Paths_scripts
   hs-source-dirs:
       projects
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , directory
+    , fsnotify
+    , ilist
+    , monad-parallel
+    , optparse-applicative
+    , process
+    , scripts
+    , split
+    , text
+    , unordered-containers
+    , yaml
+  default-language: Haskell2010
+
+executable secrets
+  main-is: Main.hs
+  other-modules:
+      Secrets
+      Paths_scripts
+  hs-source-dirs:
+      secrets
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -181,7 +263,15 @@ executable simple-watch
       Paths_scripts
   hs-source-dirs:
       simple-watch
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
@@ -206,32 +296,15 @@ executable ssh-init
       Paths_scripts
   hs-source-dirs:
       ssh-init
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      aeson
-    , base >=4.7 && <5
-    , bytestring
-    , directory
-    , fsnotify
-    , ilist
-    , monad-parallel
-    , optparse-applicative
-    , process
-    , scripts
-    , split
-    , text
-    , unordered-containers
-    , yaml
-  default-language: Haskell2010
-
-executable secrets
-  main-is: Main.hs
-  other-modules:
-      Paths_scripts
-  hs-source-dirs:
-      secrets
-  default-extensions: OverloadedStrings LambdaCase RecordWildCards NamedFieldPuns DuplicateRecordFields DeriveGeneric DeriveAnyClass ScopedTypeVariables
+  default-extensions:
+      OverloadedStrings
+      LambdaCase
+      RecordWildCards
+      NamedFieldPuns
+      DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      ScopedTypeVariables
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson

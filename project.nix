@@ -1,6 +1,6 @@
 { mkDerivation, aeson, base, bytestring, directory, fsnotify, hpack
-, ilist, monad-parallel, optparse-applicative, process, split
-, stdenv, text, unordered-containers, yaml
+, ilist, lib, monad-parallel, optparse-applicative, process, split
+, text, unordered-containers, yaml
 }:
 mkDerivation {
   pname = "scripts";
@@ -19,5 +19,5 @@ mkDerivation {
   ];
   prePatch = "hpack";
   homepage = "https://github.com/DerekMaffett/scripts#readme";
-  license = stdenv.lib.licenses.bsd3;
+  license = lib.licenses.bsd3;
 }

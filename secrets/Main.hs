@@ -2,12 +2,43 @@ module Main where
 
 import           Control.Monad
 import           Options.Applicative
--- import qualified Secrets
+import qualified Secrets
 
 data Command
-  = Add String |
+  = Add AddOptions |
     Clone |
     Sync
+
+data AddOptions = AddOptions
+    { fileName :: String
+    , filePath :: String
+    }
+    deriving Show
+
+
+addOpts :: ParserInfo Command
+addOpts = info optsParser desc
+  where
+    optsParser =
+        Add
+            <$>  liftA2
+                     AddOptions
+                     (  strOption
+                     $  long "file"
+                     <> short 'f'
+                     <> metavar "FILE_PATH"
+                     <> help "file path"
+                     )
+                     (  strOption
+                     $  long "name"
+                     <> short 'n'
+                     <> metavar "FILE_NAME"
+                     <> help "file name"
+                     )
+            <**> helper
+    desc = fullDesc <> progDesc "Adds a file to secrets tracking" <> header
+        "Secret addition"
+
 
 cloneOpts :: ParserInfo Command
 cloneOpts = Clone <$ info
@@ -21,14 +52,6 @@ syncOpts = Sync <$ info
         "secrets back-up"
     )
 
-addOpts :: ParserInfo Command
-addOpts = Add <$> info
-    (strOption $ long "file" <> short 'f' <> metavar "FILE_PATH" <> help
-        "file path"
-    )
-    (fullDesc <> progDesc "Adds a file to secrets tracking" <> header
-        "Secret addition"
-    )
 
 opts :: ParserInfo Command
 opts = info optsParser desc
@@ -45,7 +68,8 @@ opts = info optsParser desc
 main = do
     command <- execParser opts
     case command of
-        Add filePath -> putStrLn "pending"
-        Clone        -> putStrLn "pending"
-        Sync         -> putStrLn "pending"
+        Add (AddOptions { fileName, filePath }) ->
+            Secrets.add fileName filePath
+        Clone -> putStrLn "pending"
+        Sync  -> putStrLn "pending"
     putStrLn "Done!"

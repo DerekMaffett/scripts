@@ -17,6 +17,7 @@ data Config = Config
     }
     deriving (Generic, A.FromJSON, A.ToJSON)
 
+-- NOTE: Does not work well. Use fswatch instead, see nix-config for details
 main = do
     channel            <- newChan
     (config :: Config) <- readJsonFile' ".simple-watch.json"
