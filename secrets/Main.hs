@@ -24,16 +24,16 @@ addOpts = info optsParser desc
             <$>  liftA2
                      AddOptions
                      (  strOption
-                     $  long "file"
-                     <> short 'f'
-                     <> metavar "FILE_PATH"
-                     <> help "file path"
-                     )
-                     (  strOption
                      $  long "name"
                      <> short 'n'
                      <> metavar "FILE_NAME"
                      <> help "file name"
+                     )
+                     (  strOption
+                     $  long "file"
+                     <> short 'f'
+                     <> metavar "FILE_PATH"
+                     <> help "file path"
                      )
             <**> helper
     desc = fullDesc <> progDesc "Adds a file to secrets tracking" <> header
