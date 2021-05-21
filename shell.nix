@@ -22,6 +22,7 @@ pkgs.mkShell {
     (pkgs.localCabalRun "nix-npm" "nix-npm")
     (pkgs.localCabalRun "ssh-init" "ssh-init")
     (pkgs.localCabalRun "simple-watch" "simple-watch")
+    (pkgs.localCabalRun "secrets" "secrets")
   ];
 }
 

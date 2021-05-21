@@ -94,6 +94,15 @@ executables:
             - -with-rtsopts=-N
         dependencies:
             - scripts
+    secrets:
+        main: Main.hs
+        source-dirs: secrets
+        ghc-options:
+            - -threaded
+            - -rtsopts
+            - -with-rtsopts=-N
+        dependencies:
+            - scripts
 
 default-extensions:
     - OverloadedStrings

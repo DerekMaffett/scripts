@@ -1,20 +1,21 @@
 module Main where
 
-import           Files                          ( readJsonFile' )
-import qualified Data.Aeson                    as A
-import qualified Data.Text                     as T
-import           System.Process                 ( callCommand )
-import           System.FSNotify
 import           Control.Concurrent             ( threadDelay )
 import           Control.Concurrent.Chan
 import           Control.Monad                  ( forever )
+import qualified Data.Aeson                    as A
+import qualified Data.Text                     as T
+import           Files                          ( readJsonFile' )
 import           GHC.Generics
+import           System.FSNotify
+import           System.Process                 ( callCommand )
 
 data Config = Config
-    { src :: String
+    { src     :: String
     , exclude :: [T.Text]
     , command :: String
-    } deriving (Generic, A.FromJSON, A.ToJSON)
+    }
+    deriving (Generic, A.FromJSON, A.ToJSON)
 
 main = do
     channel            <- newChan
