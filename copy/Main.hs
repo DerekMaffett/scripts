@@ -1,8 +1,8 @@
 module Main where
 
-import           System.Process
-import           Data.List
 import           Data.Char
+import           Data.List
+import           System.Process
 
 main :: IO ()
 main = do

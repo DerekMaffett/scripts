@@ -5,12 +5,21 @@ import qualified Data.HashMap.Strict           as HM
 import qualified Data.List                     as List
 import qualified Data.Maybe                    as Maybe
 import           Files                          ( alterJsonFile
-                                                , alterYamlFile
                                                 , readJsonFile
                                                 , writeJsonFile
                                                 )
+import qualified LastPass
 import           Options.Applicative
 import qualified System.Directory              as Dir
+
+
+secretsIndexPath = ".config/secrets/index.json"
+secretsConfigDirPath = ".config/secrets"
+secretFilesDirPath = ".config/secrets/files"
+lastPassSecretPrefix = "__secrets_file_"
+lastPassIndexFileName = "__secrets_index"
+
+
 
 add fileName filePath = do
     absoluteFilePath <- Dir.makeAbsolute filePath
@@ -37,10 +46,27 @@ trackFile fileName filePath = do
     Dir.removeFile filePath
     Dir.createFileLink secretPath filePath
 
-
 removeHome homeDir absoluteFilePath =
     ("~" <>) . Maybe.fromJust . (List.stripPrefix homeDir) $ absoluteFilePath
 
-secretsIndexPath = ".config/secrets/index.json"
-secretsConfigDirPath = ".config/secrets"
-secretFilesDirPath = ".config/secrets/files"
+
+
+list = do
+    homeDir <- Dir.getHomeDirectory
+    index   <- readJsonFile secretsIndexPath
+    mapM_ (\fileName -> putStrLn fileName)
+        $ HM.keys (index :: HM.HashMap String String)
+
+
+
+sync = do
+    homeDir <- Dir.getHomeDirectory
+    LastPass.uploadFile lastPassIndexFileName
+                        (homeDir <> "/" <> secretsIndexPath)
+    (secretsIndex :: HM.HashMap String String) <- readJsonFile secretsIndexPath
+    mapM_
+        (\fileName -> LastPass.uploadFile
+            (lastPassSecretPrefix <> fileName)
+            (homeDir <> "/" <> secretFilesDirPath <> "/" <> fileName)
+        )
+        (HM.keys secretsIndex)

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 923be8dd740cd967bd252a5455b7431147fef3ceeae14c402a92edc063967940
+-- hash: 0dbf72aee879efc761a3bc7bb4c27a258352aa9f331847cc564ccd11c727d00a
 
 name:           scripts
 version:        0.1.0.0
@@ -226,6 +226,7 @@ executable projects
 executable secrets
   main-is: Main.hs
   other-modules:
+      LastPass
       Secrets
       Paths_scripts
   hs-source-dirs:

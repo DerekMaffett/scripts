@@ -6,6 +6,7 @@ import qualified Secrets
 
 data Command
   = Add AddOptions |
+    List |
     Clone |
     Sync
 
@@ -20,38 +21,36 @@ addOpts :: ParserInfo Command
 addOpts = info optsParser desc
   where
     optsParser =
-        Add
-            <$>  liftA2
-                     AddOptions
-                     (  strOption
-                     $  long "name"
-                     <> short 'n'
-                     <> metavar "FILE_NAME"
-                     <> help "file name"
-                     )
-                     (  strOption
-                     $  long "file"
-                     <> short 'f'
-                     <> metavar "FILE_PATH"
-                     <> help "file path"
-                     )
-            <**> helper
+        Add <$> liftA2 AddOptions fileNameFlag filePathFlag <**> helper
     desc = fullDesc <> progDesc "Adds a file to secrets tracking" <> header
         "Secret addition"
+    fileNameFlag =
+        strOption $ long "name" <> short 'n' <> metavar "FILE_NAME" <> help
+            "file name"
+    filePathFlag =
+        strOption $ long "file" <> short 'f' <> metavar "FILE_PATH" <> help
+            "file path"
 
+listOpts :: ParserInfo Command
+listOpts = info optsParser desc
+  where
+    optsParser = List <$ (pure ()) <**> helper
+    desc =
+        fullDesc <> progDesc "Lists tracked secrets" <> header "Secret listing"
 
 cloneOpts :: ParserInfo Command
-cloneOpts = Clone <$ info
-    (pure ())
-    (fullDesc <> progDesc "Clones all secrets" <> header "secrets cloning")
+cloneOpts = info optsParser desc
+  where
+    optsParser = Clone <$ (pure ()) <**> helper
+    desc =
+        fullDesc <> progDesc "Clones all secrets" <> header "secrets cloning"
 
 syncOpts :: ParserInfo Command
-syncOpts = Sync <$ info
-    (pure ())
-    (fullDesc <> progDesc "Backs up secrets to storage" <> header
-        "secrets back-up"
-    )
-
+syncOpts = info optsParser desc
+  where
+    optsParser = Sync <$ (pure ()) <**> helper
+    desc       = fullDesc <> progDesc "Backs up secrets to storage" <> header
+        "secrets backup"
 
 opts :: ParserInfo Command
 opts = info optsParser desc
@@ -59,6 +58,7 @@ opts = info optsParser desc
     optsParser =
         subparser
                 (  command "add"   addOpts
+                <> command "list"  listOpts
                 <> command "clone" cloneOpts
                 <> command "sync"  syncOpts
                 )
@@ -70,6 +70,7 @@ main = do
     case command of
         Add (AddOptions { fileName, filePath }) ->
             Secrets.add fileName filePath
+        List  -> Secrets.list
+        Sync  -> Secrets.sync
         Clone -> putStrLn "pending"
-        Sync  -> putStrLn "pending"
     putStrLn "Done!"
