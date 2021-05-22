@@ -34,21 +34,21 @@ addOpts = info optsParser desc
 listOpts :: ParserInfo Command
 listOpts = info optsParser desc
   where
-    optsParser = List <$ (pure ()) <**> helper
+    optsParser = List <$ helper
     desc =
         fullDesc <> progDesc "Lists tracked secrets" <> header "Secret listing"
 
 cloneOpts :: ParserInfo Command
 cloneOpts = info optsParser desc
   where
-    optsParser = Clone <$ (pure ()) <**> helper
+    optsParser = Clone <$ helper
     desc =
         fullDesc <> progDesc "Clones all secrets" <> header "secrets cloning"
 
 syncOpts :: ParserInfo Command
 syncOpts = info optsParser desc
   where
-    optsParser = Sync <$ (pure ()) <**> helper
+    optsParser = Sync <$ helper
     desc       = fullDesc <> progDesc "Backs up secrets to storage" <> header
         "secrets backup"
 
@@ -58,7 +58,7 @@ opts = info optsParser desc
     optsParser =
         subparser
                 (  command "add"   addOpts
-                <> command "list"  listOpts
+                <> command "ls"    listOpts
                 <> command "clone" cloneOpts
                 <> command "sync"  syncOpts
                 )
@@ -67,10 +67,10 @@ opts = info optsParser desc
 
 main = do
     command <- execParser opts
+    Secrets.init
     case command of
         Add (AddOptions { fileName, filePath }) ->
             Secrets.add fileName filePath
         List  -> Secrets.list
         Sync  -> Secrets.sync
-        Clone -> putStrLn "pending"
-    putStrLn "Done!"
+        Clone -> Secrets.clone
