@@ -19,48 +19,95 @@ secretFilesDirPath = ".config/secrets/files"
 lastPassSecretPrefix = "__secrets_file_"
 lastPassIndexFileName = "__secrets_index"
 
+data Preconditon = Precondition
+    { condition :: IO Bool
+    , autofix   :: Maybe (IO ())
+    , message   :: String
+    }
 
-init = do
+testPreconditions = mapM_
+    (\Precondition { condition, autofix, message } -> do
+        conditionSatisfied <- condition
+        if conditionSatisfied
+            then return ()
+            else case autofix of
+                Nothing           -> error message
+                Just availableFix -> do
+                    putStrLn message
+                    availableFix
+    )
+
+
+secretsFolderExists = Precondition
+    { condition = do
+                      homeDir                <- Dir.getHomeDirectory
+                      secretsConfigDirExists <-
+                          Dir.doesDirectoryExist
+                          $  homeDir
+                          <> "/"
+                          <> secretsConfigDirPath
+                      secretsFilesDirExists <-
+                          Dir.doesDirectoryExist
+                          $  homeDir
+                          <> "/"
+                          <> secretFilesDirPath
+                      return $ secretsConfigDirExists && secretsFilesDirExists
+    , autofix   = Just $ do
+                      homeDir <- Dir.getHomeDirectory
+                      Dir.createDirectoryIfMissing True
+                          $  homeDir
+                          <> "/"
+                          <> secretsConfigDirPath
+                      Dir.createDirectoryIfMissing True
+                          $  homeDir
+                          <> "/"
+                          <> secretFilesDirPath
+    , message   = "Secrets directory missing. Creating folders..."
+    }
+
+
+secretsIndexFileExists = do
     homeDir <- Dir.getHomeDirectory
-    Dir.createDirectoryIfMissing True $ homeDir <> "/" <> secretsConfigDirPath
-    Dir.createDirectoryIfMissing True $ homeDir <> "/" <> secretFilesDirPath
+    Dir.doesPathExist $ homeDir <> "/" <> secretsIndexPath
 
+createSecretsFile = do
+    writeJsonFile secretsIndexPath (HM.empty :: HM.HashMap String String)
 
-
-
-add fileName filePath = do
-    absoluteFilePath <- Dir.makeAbsolute filePath
-    ensureSecretsFileExists
-    trackFile fileName absoluteFilePath
-
-ensureSecretsFileExists = do
+fileNotTracked filePath = do
     homeDir <- Dir.getHomeDirectory
-    exists  <- Dir.doesPathExist $ homeDir <> "/" <> secretsIndexPath
-    if not exists
-        then writeJsonFile secretsIndexPath
-                           (HM.empty :: HM.HashMap String String)
-        else return ()
+    paths   <- HM.elems <$> readIndex
+    let fullPaths = expandHome homeDir <$> paths
+    return $ filePath `List.notElem` fullPaths
 
-trackFile fileName filePath = do
-    homeDir <- Dir.getHomeDirectory
+add fileName relativeFilePath = do
+    homeDir  <- Dir.getHomeDirectory
+    filePath <- Dir.makeAbsolute relativeFilePath
     let secretPath = homeDir <> "/" <> secretFilesDirPath <> "/" <> fileName
     let contractedLinkPath = contractHome homeDir filePath
 
-    secretFileAlreadyExists <- Dir.doesPathExist secretPath
-    if secretFileAlreadyExists
-        then error "A secret already exists by that name"
-        else return ()
-
-    paths <- HM.elems <$> readIndex
-    let fullPaths = expandHome homeDir <$> paths
-    if filePath `List.elem` fullPaths
-        then error "A secret already is reserved for that file path"
-        else return ()
+    testPreconditions
+        [ secretsFolderExists
+        , Precondition
+            { condition = secretsIndexFileExists
+            , autofix   = Just createSecretsFile
+            , message   = secretsIndexPath <> " missing, reconstructing..."
+            }
+        , Precondition { condition = not <$> Dir.doesPathExist secretPath
+                       , autofix   = Nothing
+                       , message   = "A secret already exists by that name"
+                       }
+        , Precondition
+            { condition = fileNotTracked filePath
+            , autofix   = Nothing
+            , message   = "A secret already is reserved for that file path"
+            }
+        ]
 
     alterJsonFile secretsIndexPath $ HM.insert fileName contractedLinkPath
     Dir.copyFile filePath secretPath
     Dir.removeFile filePath
     Dir.createFileLink secretPath filePath
+
 
 contractHome homeDir absoluteFilePath =
     ("~" <>) . Maybe.fromJust . (List.stripPrefix homeDir) $ absoluteFilePath
@@ -76,12 +123,32 @@ readIndex = do
 
 
 list = do
+    testPreconditions
+        [ secretsFolderExists
+        , Precondition
+            { condition = secretsIndexFileExists
+            , autofix   = Nothing
+            , message   = secretsIndexPath
+                              <> " missing. Please clone or add secrets"
+            }
+        ]
+
     keys <- HM.keys <$> readIndex
     mapM_ (\fileName -> putStrLn fileName) keys
 
 
 
 sync = do
+    testPreconditions
+        [ secretsFolderExists
+        , Precondition
+            { condition = secretsIndexFileExists
+            , autofix   = Nothing
+            , message   = secretsIndexPath
+                              <> " missing. Please clone or add secrets"
+            }
+        ]
+
     homeDir <- Dir.getHomeDirectory
     LastPass.uploadFile lastPassIndexFileName
                         (homeDir <> "/" <> secretsIndexPath)
@@ -96,6 +163,8 @@ sync = do
 
 
 clone = do
+    testPreconditions [secretsFolderExists]
+
     homeDir <- Dir.getHomeDirectory
     LastPass.safeClone lastPassIndexFileName
                        (homeDir <> "/" <> secretsIndexPath)

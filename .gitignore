@@ -1,2 +1,3 @@
 dist-newstyle/
-SUPER_SECRET
+secrets/.examples/SUPER_SECRET
+secrets/.examples/SECOND_SECRET

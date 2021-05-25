@@ -67,7 +67,6 @@ opts = info optsParser desc
 
 main = do
     command <- execParser opts
-    Secrets.init
     case command of
         Add (AddOptions { fileName, filePath }) ->
             Secrets.add fileName filePath
