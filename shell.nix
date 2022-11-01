@@ -17,7 +17,6 @@ pkgs.mkShell {
     (pkgs.writeShellScriptBin "update" "hpack && cabal2nix . > project.nix")
     (pkgs.localCabalRun "projects" "projects")
     (pkgs.localCabalRun "copy" "copy")
-    (pkgs.localCabalRun "create-interactive-slideshow" "create-interactive-slideshow")
     (pkgs.localCabalRun "nix-github" "nix-github")
     (pkgs.localCabalRun "nix-npm" "nix-npm")
     (pkgs.localCabalRun "ssh-init" "ssh-init")
