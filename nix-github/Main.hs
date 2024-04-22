@@ -53,8 +53,8 @@ data PrefetchData = PrefetchData
     { owner :: String
     , repo :: String
     , rev :: String
-    , sha256 :: String
-   } deriving (Generic, A.FromJSON, A.ToJSON)
+    , hash :: String
+   } deriving (Generic, A.FromJSON, A.ToJSON, Show)
 
 centralPkgList = "dotfiles/configs/github-pkgs/github-pkgs.json"
 compiledPkgList = "dotfiles/configs/github-pkgs/compiled-github-pkgs.json"
