@@ -15,6 +15,12 @@ import qualified Data.HashMap.Strict           as HM
 import           Data.List.Split
 import           Data.ByteString.Lazy.Char8     ( pack )
 import qualified Control.Monad.Parallel        as P
+import           Control.Exception              ( try
+                                                , SomeException
+                                                )
+import           System.IO                      ( hPutStrLn
+                                                , stderr
+                                                )
 
 data Command
   = Add String
@@ -65,16 +71,37 @@ addRepo repoAddress = do
 
 updateRepos = do
     repos :: [String] <- readJsonFile centralPkgList
-    newContents       <- foldToHashMap <$> P.mapM prefetchGithub repos
-    writeJsonFile compiledPkgList newContents
+    results           <- P.mapM prefetchGithub repos
+    let successfulResults = catMaybes results
+    if null successfulResults
+        then hPutStrLn stderr "Error: All fetches failed"
+        else writeJsonFile compiledPkgList (foldToHashMap successfulResults)
 
-prefetchGithub :: String -> IO PrefetchData
-prefetchGithub repoAddress =
-    let org : repo : _ = splitOn "/" repoAddress
-    in  do
+prefetchGithub :: String -> IO (Maybe PrefetchData)
+prefetchGithub repoAddress = do
+    result <- try (prefetchGithub' repoAddress) :: IO (Either SomeException (Maybe PrefetchData))
+    case result of
+        Left err -> do
+            hPutStrLn stderr $ "Error fetching " <> repoAddress <> ": " <> show err
+            return Nothing
+        Right val -> return val
+
+prefetchGithub' :: String -> IO (Maybe PrefetchData)
+prefetchGithub' repoAddress =
+    case splitOn "/" repoAddress of
+        [org, repo] -> do
             prefetchResult <- readProcess "nix-prefetch-github" [org, repo] []
-            putStrLn $ "Updated " <> org <> "/" <> repo
-            return $ fromJust <$> A.decode $ pack prefetchResult
+            case A.decode $ pack prefetchResult of
+                Nothing -> do
+                    hPutStrLn stderr $ "Error: Invalid JSON from nix-prefetch-github for " <> org <> "/" <> repo
+                    hPutStrLn stderr $ "Output was: " <> prefetchResult
+                    return Nothing
+                Just parsed -> do
+                    putStrLn $ "Updated " <> org <> "/" <> repo
+                    return $ Just parsed
+        _ -> do
+            hPutStrLn stderr $ "Error: Invalid repo address format: " <> repoAddress <> " (expected org/repo)"
+            return Nothing
 
 foldToHashMap prefetchResults =
     foldl (<>) HM.empty . map createSingleton $ prefetchResults
